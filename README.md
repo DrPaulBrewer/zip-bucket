@@ -58,6 +58,24 @@ THe returned `manifest` consists of an array of pairs of the file name in the bu
 zipBucket does not delete the files that are zipped.  That's your job.  We haven't tested this much, so you might
 want to wait on deleting anything just yet unless you test the zip file integrity yourself.
 
+### /tmp files
+
+The zip procedure creates unique .zip files in /tmp.  Currently these are not deleted, but will be in an update.
+
+### Limitations
+
+Input files are streamed so the limit is not dependent on the size of input files except through the size
+of the resulting zip file.  The maximum zip file size will depend on the space available in `/tmp`.  
+
+
+### Google Cloud Charges
+
+Keep in mind that running this software outside of Google Cloud will result in bandwidth fees. To save money,
+you should probably find a way to run it from within Google Cloud.
+
+Note:  All Google service fees are your responsibility, as the user of this software, and under the MIT License there is
+a disclaimer of liability for any defects in this software.
+
 ## Local Testing
 
 If you clone the repository and want to test it locally, you will need to change the storage initialization and
