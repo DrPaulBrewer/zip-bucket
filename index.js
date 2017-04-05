@@ -89,15 +89,32 @@ module.exports = function zipBucket(storage){
 		    }
 		};
 		if (typeof(metadata)==='object') options.metadata.metadata = metadata;
-		return promiseRetry((retry)=>(storage.bucket(toBucket).upload(tmpzip, options).catch(retry), backoffStrategy));
+		return promiseRetry((retry)=>(storage.bucket(toBucket).upload(tmpzip, options).catch(retry)), backoffStrategy);
 	    }
 	}
 	function keepTheZipFile(){
 	    if (keep){ 
 		return new Promise(function(resolve,reject){
-		    mv(tmpzip,keep,(e)=>{if(e) reject(e); else resolve();});
+		    mv(tmpzip,keep,(e)=>{if(e) reject(e); else setTimeout(resolve, 500); });
 		});
 	    }
+	}
+	function checkZipExistsInBucket(){
+	    if (toBucket){
+		return (promiseRetry((retry)=>(storage
+					       .bucket(toBucket)
+					       .file(toPath)
+					       .exists()
+					       .then((info)=> {if (!(info[0])) throw new Error("checkZipExistsInBucket: zip file not found in storage bucket"); })
+					       .catch(retry)
+						   ), backoffStrategy)
+		       );
+	    }
+	}
+	function deleteTheZipFile(){
+	    return new Promise(function(resolve,reject){
+		fs.unlink(tmpzip, (e)=>{if(e) reject(e); else setTimeout(resolve, 100); });
+	    });
 	}
 	function successfulResult(){
 	    return {
@@ -115,6 +132,8 @@ module.exports = function zipBucket(storage){
 		.then(finalize)
 		.then(uploadTheZipFile)
 		.then(keepTheZipFile)
+		.then(checkZipExistsInBucket)
+		.then(deleteTheZipFile)
 		.then(successfulResult)
 	       );	
     };

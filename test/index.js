@@ -68,9 +68,6 @@ function deleteFiles(){
 }
 
 function suite(){
-    beforeEach(function(done){
-	setTimeout(done, 1000);
-    });
     it('delete test files', function(){
 	return deleteFiles();
     });

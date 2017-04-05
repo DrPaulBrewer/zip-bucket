@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --reporter spec --slow 5000 --timeout 120000"
+    "test": "mocha --reporter spec --slow 1000 --timeout 10000"
   },
   "repository": {
     "type": "git",
