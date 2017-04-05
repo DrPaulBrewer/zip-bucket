@@ -58,6 +58,11 @@ THe returned `manifest` consists of an array of pairs of the file name in the bu
 zipBucket does not delete the files that are zipped.  That's your job.  We haven't tested this much, so you might
 want to wait on deleting anything just yet unless you test the zip file integrity yourself.
 
+## Local Testing
+
+If you clone the repository and want to test it locally, you will need to change the storage initialization and
+bucket names in ./test/index.js to something more appropriate for your local tests.  
+
 ## Known Issues
 
 * Needs more tests
