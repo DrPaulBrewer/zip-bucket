@@ -55,12 +55,12 @@ THe returned `manifest` consists of an array of pairs of the file name in the bu
 
 ### No bucket files are moved or deleted by zipBucket
 
-zipBucket does not delete the files that are zipped.  That's your job.  We haven't tested this much, so you might
-want to wait on deleting anything just yet unless you test the zip file integrity yourself.
+`zipBucket` does not delete the files from the bucket after copying them to the `.zip` archive. That's your job. The resolved `manifest` may be helpful. 
 
 ### /tmp files
 
-The zip procedure creates unique .zip files in /tmp.  Currently these are not deleted, but will be in an update.
+The zip procedure creates unique .zip files in /tmp . These temporary .zip files are deleted on success -- but not deleted on error -- and may accumulate over time or potentially allow unauthorized reading or
+copying of the data.  
 
 ### Limitations
 
