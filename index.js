@@ -34,7 +34,7 @@ function suggestedName(fname, fromPath){
 
 module.exports = function zipBucket(storage){
     "use strict";
-    return function({fromBucket,fromPath,toBucket,toPath,keep,mapper,metadata}){
+    return function({fromBucket,fromPath,toBucket,toPath,keep,mapper,metadata,progress}){
 	if (typeof(fromBucket)!=="string") throw new Error("fromBucket require string, got:"+typeof(fromBucket));
 	if (typeof(fromPath)!=="string") throw new Error("fromPath require string, got:"+typeof(fromPath));
 	const manifest = [];
@@ -58,6 +58,7 @@ module.exports = function zipBucket(storage){
 		if (!pathInZip)
 		    return false;
 	    }
+	    if (progress) console.log("adding gs://"+fromBucket+"/"+f.name);
 	    return new Promise(function(resolve, reject){
 		const reader = storage.bucket(fromBucket).file(f.name).createReadStream();
 		reader.on('error', (e)=>{ reject(e); });
@@ -73,6 +74,7 @@ module.exports = function zipBucket(storage){
 	}
 	function finalize(){
 	    return new Promise(function(resolve){
+		if (progress) console.log("finalizing zip file");
 		output.on('close', ()=>(resolve()));
 		zip.finalize();
 	    });
@@ -89,11 +91,13 @@ module.exports = function zipBucket(storage){
 		    }
 		};
 		if (typeof(metadata)==='object') options.metadata.metadata = metadata;
+		if (progress) console.log("uploading zip file to gs://"+toBucket+"/"+toPath);
 		return promiseRetry((retry)=>(storage.bucket(toBucket).upload(tmpzip, options).catch(retry)), backoffStrategy);
 	    }
 	}
 	function keepTheZipFile(){
-	    if (keep){ 
+	    if (keep){
+		if (progress) console.log("saving zip file locally to "+keep);
 		return new Promise(function(resolve,reject){
 		    mv(tmpzip,keep,(e)=>{if(e) reject(e); else setTimeout(resolve, 100); });
 		});
@@ -101,6 +105,7 @@ module.exports = function zipBucket(storage){
 	}
 	function checkZipExistsInBucket(){
 	    if (toBucket){
+		console.log("confirming existence of zip file at gs://"+toBucket+"/"+toPath);
 		return (promiseRetry((retry)=>(storage
 					       .bucket(toBucket)
 					       .file(toPath)
@@ -118,6 +123,7 @@ module.exports = function zipBucket(storage){
 	    });
 	}
 	function successfulResult(){
+	    if (progress) console.log("finished");
 	    return {
 		keep,
 		fromBucket,

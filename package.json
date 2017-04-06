@@ -3,6 +3,7 @@
   "version": "0.3.2",
   "description": "zips files in a Google Cloud Storage [tm] bucket",
   "main": "index.js",
+  "bin": "bin.js",  
   "directories": {
     "test": "test"
   },
