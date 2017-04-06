@@ -16,7 +16,7 @@ npm i zip-bucket -S
 
 **Pass the storage object** when setting up zipBucket for usage.
 
-    const zipBucket = require('zip-bucket');
+    const zipBucket = require('zip-bucket')(storage);
 
 ## Usage
 
