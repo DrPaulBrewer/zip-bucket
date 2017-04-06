@@ -33,9 +33,11 @@
   "devDependencies": {
     "@google-cloud/storage": "^1.0.0",
     "assert": "^1.4.1",
+    "command-promise": "^2.0.1",
     "mocha": "^3.2.0",
     "pipe-to-storage": "^0.8.2",
     "should": "^11.2.1",
-    "verify-bucket-md5": "^0.3.0"
+    "verify-bucket-md5": "^0.3.0",
+    "verify-fsdir-md5": "^0.2.0"
   }
 }

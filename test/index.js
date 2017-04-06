@@ -3,6 +3,8 @@
 const assert = require('assert');
 require('should');
 const fs = require('fs');
+const cmd =  require('command-promise');
+const verifyFSDirMD5 = require('verify-fsdir-md5');
 
 const storage = require('@google-cloud/storage')({
     projectId: 'eaftc-open-source-testing',
@@ -37,6 +39,7 @@ const fromBucket = bucket;
 const toBucket = bucket;
 const fromPath = 'zipfodder';
 const toPath = 'zipped/zip.zip';
+const keep = '/tmp/zipbuckettest.zip';
 
 
 const file1 = fromPath+'/hello.txt';
@@ -64,7 +67,11 @@ function deleteFiles(){
 			     .catch((e)=>{})
 				 ) )
 		)
-	   );
+	    .then(()=>{ fs.unlink(keep, (e)=>{}); })
+	    .catch((e)=>{})
+		.then(cmd.so('rm -rf /tmp/zipfodder'))
+	    .catch((e)=>{})
+		);
 }
 
 function suite(){
@@ -99,10 +106,23 @@ function suite(){
 	       );
     });
     it('zipBucket resolves without throwing error', function(){
-	return zipBucket({fromBucket,fromPath,toBucket,toPath});
+	return zipBucket({fromBucket,fromPath,toBucket,toPath,keep });
     });
     it('zip file exists on storage', function(){
 	return assertFileExists(toPath, true);
+    });
+    it('zip exists locally as '+keep, function(){
+	return assert.ok(fs.existsSync(keep));
+    });
+    it('can unzip this file with unzip shell command', function(){
+	return cmd('cd /tmp && unzip '+keep);
+    });
+    it('verifyDirMD5 resolves to [true, ...]', function(){
+	return (verifyFSDirMD5('/tmp/zipfodder/md5.json')
+		.then(function(status){
+		    assert.ok(status[0]);
+		})
+	       );
     });
     it('delete test files', function(){
 	return deleteFiles();

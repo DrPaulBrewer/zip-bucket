@@ -11,8 +11,8 @@ const promiseRetry = require('promise-retry');
 const pEachSeries = require('p-each-series');
 
 const backoffStrategy = {
-    retries: 2,
-    factor: 1.5,
+    retries: 3,
+    factor: 2,
     minTimeout:  1000,
     maxTimeout: 10000,
     randomize: true
@@ -95,7 +95,7 @@ module.exports = function zipBucket(storage){
 	function keepTheZipFile(){
 	    if (keep){ 
 		return new Promise(function(resolve,reject){
-		    mv(tmpzip,keep,(e)=>{if(e) reject(e); else setTimeout(resolve, 500); });
+		    mv(tmpzip,keep,(e)=>{if(e) reject(e); else setTimeout(resolve, 100); });
 		});
 	    }
 	}
@@ -113,7 +113,8 @@ module.exports = function zipBucket(storage){
 	}
 	function deleteTheZipFile(){
 	    return new Promise(function(resolve,reject){
-		fs.unlink(tmpzip, (e)=>{if(e) reject(e); else setTimeout(resolve, 100); });
+		// ignore errors as keepTheZipFile may have moved/deleted the tmpzip already
+		fs.unlink(tmpzip, ()=>{ setTimeout(resolve, 100); });
 	    });
 	}
 	function successfulResult(){
