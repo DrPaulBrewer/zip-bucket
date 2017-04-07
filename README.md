@@ -20,7 +20,7 @@ Enter `zip-bucket --help` to print this reminder message:
 
 <pre>
 
-  Usage: zip-bucket [options] <fromBucketPath> [toBucketPath]
+  Usage: zip-bucket [options] fromBucketPath [toBucketPath]
 
   Options:
 
