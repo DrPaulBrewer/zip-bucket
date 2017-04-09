@@ -1,6 +1,7 @@
 # zip-bucket
 
 [![Build Status](https://travis-ci.org/DrPaulBrewer/zip-bucket.svg?branch=master)](https://travis-ci.org/DrPaulBrewer/zip-bucket)
+[![Coverage Status](https://coveralls.io/repos/github/DrPaulBrewer/zip-bucket/badge.svg?branch=master)](https://coveralls.io/github/DrPaulBrewer/zip-bucket?branch=master)
 
 Creates a .zip archive from a collection of files in a Google Cloud Storage[tm] bucket.  Include nodejs library and simple command-line program.
 
