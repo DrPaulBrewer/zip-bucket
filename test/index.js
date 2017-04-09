@@ -94,7 +94,25 @@ function suite(){
 	    toBucket,
 	    toPath:"all.zip"
 	}).then(()=>(storage.bucket(bucket).file("all.zip").delete()));
-    });	
+    });
+    it('simple request to zip all files, with progress messages enabled, succeeds without error', function(){
+	return zipBucket({
+	    fromBucket,
+	    fromPath: "",
+	    toBucket,
+	    toPath:"all.zip",
+	    progress: 1
+	}).then(()=>(storage.bucket(bucket).file("all.zip").delete()));
+    });
+    it('zip files with mappper that rejects all files succeeds with error', function(){
+	return zipBucket({
+	    fromBucket,
+	    fromPath: '',
+	    toBucket,
+	    toPath: "none.zip",
+	    mapper: (fInBucket, fSuggested)=>(false)
+	}).then(()=>(storage.bucket(bucket).file("none.zip").delete()));
+    });
     it('delete test files', function(){
 	return deleteFiles();
     });
