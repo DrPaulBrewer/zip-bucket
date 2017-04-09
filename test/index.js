@@ -93,7 +93,10 @@ function suite(){
 	    fromPath: "",
 	    toBucket,
 	    toPath:"all.zip"
-	}).then(()=>(storage.bucket(bucket).file("all.zip").delete()));
+	}).then((result)=>{
+	    assert.ok(result.manifest.length>0);
+	    return storage.bucket(bucket).file("all.zip").delete();
+	});
     });
     it('simple request to zip all files, with progress messages enabled, succeeds without error', function(){
 	return zipBucket({
@@ -111,7 +114,10 @@ function suite(){
 	    toBucket,
 	    toPath: "none.zip",
 	    mapper: (fInBucket, fSuggested)=>(false)
-	}).then(()=>(storage.bucket(bucket).file("none.zip").delete()));
+	}).then((result)=>{
+	    assert.ok(result.manifest.length===0);
+	    return storage.bucket(bucket).file("none.zip").delete();
+	});
     });
     it('delete test files', function(){
 	return deleteFiles();
