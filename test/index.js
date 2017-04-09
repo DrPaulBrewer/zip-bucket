@@ -87,6 +87,14 @@ function suite(){
 		assert.ok(result===null);
 	    });
     });
+    it('simple request to zip all files in bucket succeeds without error', function(){
+	return zipBucket({
+	    fromBucket,
+	    fromPath: "",
+	    toBucket,
+	    toPath:"all.zip"
+	}).then(()=>(storage.bucket(bucket).file("all.zip").delete()));
+    });	
     it('delete test files', function(){
 	return deleteFiles();
     });
