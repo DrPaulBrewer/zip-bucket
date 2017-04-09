@@ -84,7 +84,7 @@ function suite(){
     it('should resolve to null if neither keep nor toBucket defined', function(){
 	return zipBucket({fromBucket:'eaftc-nonexistent-test-bucket', fromPath:''}).then(
 	    function(result){
-		result.should.be(null);
+		assert.ok(result===null);
 	    });
     });
     it('delete test files', function(){
