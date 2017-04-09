@@ -37,6 +37,7 @@ module.exports = function zipBucket(storage){
     return function({fromBucket,fromPath,toBucket,toPath,keep,mapper,metadata,progress}){
 	if (typeof(fromBucket)!=="string") throw new Error("fromBucket require string, got:"+typeof(fromBucket));
 	if (typeof(fromPath)!=="string") throw new Error("fromPath require string, got:"+typeof(fromPath));
+	if ((!keep) && (!toBucket)) return Promise.resolve(null);
 	const manifest = [];
 	const tmpzip = '/tmp/'+uuid()+'.zip';
 	const output = fs.createWriteStream(tmpzip);

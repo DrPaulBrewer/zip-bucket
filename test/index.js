@@ -75,11 +75,17 @@ function deleteFiles(){
 }
 
 function suite(){
-    it('throws if fromBucket is not defined', function(){
+    it('should throw an error if fromBucket is not defined', function(){
 	zipBucket.should.throw();
     });
-    it('throws if fromBucket is defined but fromPath is not defined', function(){
+    it('should throw an error if fromBucket is defined but fromPath is not defined', function(){
 	zipBucket.bind({},{fromBucket:'eaftc-nonexistent-test-bucket'}).should.throw();
+    });
+    it('should resolve to null if neither keep nor toBucket defined', function(){
+	return zipBucket({fromBucket:'eaftc-nonexistent-test-bucket', fromPath:''}).then(
+	    function(result){
+		result.should.be(null);
+	    });
     });
     it('delete test files', function(){
 	return deleteFiles();
