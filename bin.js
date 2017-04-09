@@ -33,10 +33,10 @@ function setKeep(path){
 }
 
 function gsParse(path, bucketProperty, pathProperty){
-    const match = /gs\:\/\/([^\/]+)\/(.*)/.exec(path);
-    if ((!match) || (match.length!==3)) return false;
+    const match = /gs\:\/\/([^\/]+)\/*(.*)/.exec(path);
+    if ((!match) || (match.length<2)) return false;
     z[bucketProperty] = match[1];
-    z[pathProperty] = match[2];
+    z[pathProperty] = match[2] || '';
     return true;
 }
 

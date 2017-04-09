@@ -106,7 +106,7 @@ module.exports = function zipBucket(storage){
 	}
 	function checkZipExistsInBucket(){
 	    if (toBucket){
-		console.log("confirming existence of zip file at gs://"+toBucket+"/"+toPath);
+		if (progress) console.log("confirming existence of zip file at gs://"+toBucket+"/"+toPath);
 		return (promiseRetry((retry)=>(storage
 					       .bucket(toBucket)
 					       .file(toPath)
