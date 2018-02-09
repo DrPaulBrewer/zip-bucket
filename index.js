@@ -30,11 +30,20 @@ function suggestedName(fname, fromPath){
     if (splitFname.length>index)
 	return splitFname.slice(index).join("/");
     return fname;
-}   
+}
+
+function manageStorageGetFilesOptions(fromPath, pathDelimiter) {
+	const getFilesOptions = {};
+	getFilesOptions.prefix = fromPath;
+	if (pathDelimiter !== nil) {
+		getFilesOptions.delimiter = pathDelimiter;
+	}
+	return getFilesOptions;
+}
 
 module.exports = function zipBucket(storage){
     "use strict";
-    return function({fromBucket,fromPath,toBucket,toPath,keep,mapper,metadata,progress}){
+    return function({fromBucket,fromPath,toBucket,toPath,keep,mapper,metadata,progress, pathDelimiter = nil}){
 	if (typeof(fromBucket)!=="string") throw new Error("fromBucket require string, got:"+typeof(fromBucket));
 	if (typeof(fromPath)!=="string") throw new Error("fromPath require string, got:"+typeof(fromPath));
 	if ((!keep) && (!toBucket)) return Promise.resolve(null);
@@ -47,8 +56,9 @@ module.exports = function zipBucket(storage){
 	});
 	zip.on('error', (e)=>{ throw e; });
 	zip.pipe(output);
+	const getFilesOptions = manageStorageGetFilesOptions(fromPath, pathDelimiter);
 	function getListOfFromFiles(){
-	    return (promiseRetry((retry)=>(storage.bucket(fromBucket).getFiles({prefix:fromPath}).catch(retry)), backoffStrategy)
+	    return (promiseRetry((retry)=>(storage.bucket(fromBucket).getFiles(getFilesOptions).catch(retry)), backoffStrategy)
 		    .then((data)=>(data[0]))
 		   );
 	}
@@ -81,7 +91,7 @@ module.exports = function zipBucket(storage){
 	    });
 	}
 	function uploadTheZipFile(){
-	    // see docs and example at: 
+	    // see docs and example at:
 	    // https://googlecloudplatform.github.io/google-cloud-node/#/docs/storage/1.0.0/storage/bucket?method=upload
 	    if (toBucket){
 		const options = {
@@ -134,7 +144,7 @@ module.exports = function zipBucket(storage){
 		metadata,
 		manifest
 	    };
-	}		
+	}
 	return (getListOfFromFiles()
 		.then(zipEachFile)
 		.then(finalize)
@@ -143,6 +153,6 @@ module.exports = function zipBucket(storage){
 		.then(checkZipExistsInBucket)
 		.then(deleteTheZipFile)
 		.then(successfulResult)
-	       );	
+	       );
     };
 };
