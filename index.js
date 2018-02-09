@@ -32,10 +32,10 @@ function suggestedName(fname, fromPath){
     return fname;
 }
 
-function manageStorageGetFilesOptions(fromPath, pathDelimiter) {
+function getFilesOptions(fromPath, pathDelimiter) {
 	const getFilesOptions = {};
 	getFilesOptions.prefix = fromPath;
-	if (pathDelimiter !== nil) {
+	if (pathDelimiter !== false) {
 		getFilesOptions.delimiter = pathDelimiter;
 	}
 	return getFilesOptions;
@@ -43,9 +43,10 @@ function manageStorageGetFilesOptions(fromPath, pathDelimiter) {
 
 module.exports = function zipBucket(storage){
     "use strict";
-    return function({fromBucket,fromPath,toBucket,toPath,keep,mapper,metadata,progress, pathDelimiter = nil}){
+    return function({fromBucket,fromPath,toBucket,toPath,keep,mapper,metadata,progress, pathDelimiter = false}){
 	if (typeof(fromBucket)!=="string") throw new Error("fromBucket require string, got:"+typeof(fromBucket));
 	if (typeof(fromPath)!=="string") throw new Error("fromPath require string, got:"+typeof(fromPath));
+	if (pathDelimiter && typeof(pathDelimiter)!=="string") throw new Error("pathDelimiter require string, got:"+typeof(fromPath));
 	if ((!keep) && (!toBucket)) return Promise.resolve(null);
 	const manifest = [];
 	const tmpzip = '/tmp/'+uuid()+'.zip';
@@ -56,9 +57,9 @@ module.exports = function zipBucket(storage){
 	});
 	zip.on('error', (e)=>{ throw e; });
 	zip.pipe(output);
-	const getFilesOptions = manageStorageGetFilesOptions(fromPath, pathDelimiter);
+	const filesOptions = getFilesOptions(fromPath, pathDelimiter);
 	function getListOfFromFiles(){
-	    return (promiseRetry((retry)=>(storage.bucket(fromBucket).getFiles(getFilesOptions).catch(retry)), backoffStrategy)
+	    return (promiseRetry((retry)=>(storage.bucket(fromBucket).getFiles(filesOptions).catch(retry)), backoffStrategy)
 		    .then((data)=>(data[0]))
 		   );
 	}
