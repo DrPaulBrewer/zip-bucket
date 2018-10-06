@@ -34,7 +34,7 @@
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "@google-cloud/storage": "^1.6.0",
+    "@google-cloud/storage": "^2.0.0",
     "assert": "^1.4.1",
     "command-promise": "^2.0.1",
     "coveralls": "^3.0.0",
