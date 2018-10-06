@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/DrPaulBrewer/zip-bucket#readme",
   "dependencies": {
-    "archiver": "^2.1.1",
+    "archiver": "^3.0.0",
     "commander": "^2.14.1",
     "mv": "^2.1.1",
     "p-each-series": "^1.0.0",
