@@ -7,7 +7,8 @@
 
 const fs = require('fs');
 const program = require('commander');
-const storageFactory = require('@google-cloud/storage');
+// for storage API 2.x
+const {Storage} = require('@google-cloud/storage');
 const zipBucketFactory = require("./index.js");
 const assert = require('assert');
 
@@ -57,7 +58,7 @@ function output(status){
  .action(function(fromBucketPath, toBucketPath){
      if (gsParse(fromBucketPath,'fromBucket','fromPath')){
 	 gsParse(toBucketPath, 'toBucket', 'toPath');
-	 const storage = storageFactory(credentials);
+	 const storage = Storage(credentials);
 	 const zipBucket = zipBucketFactory(storage);
 	 zipBucket(z).then(
 	     (status)=>{if (useJSON) console.log(JSON.stringify(status,null,2));}, (e)=>(console.log(e))
@@ -66,8 +67,3 @@ function output(status){
  })
  .parse(process.argv)
 );
-
-
-
-
-
