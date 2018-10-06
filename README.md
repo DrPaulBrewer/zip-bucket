@@ -170,7 +170,6 @@ bucket names in ./test/index.js to something more appropriate for your local tes
 ## Known Issues
 
 * Needs more tests
-
 * Needs to delete its temp files in /tmp
 
 ## Copyright
