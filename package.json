@@ -40,7 +40,7 @@
     "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.0.0",
-    "pipe-to-storage": "^0.8.4",
+    "pipe-to-storage": "^0.9.3",
     "should": "^13.2.1",
     "verify-bucket-md5": "^0.4.1",
     "verify-fsdir-md5": "^0.2.1"
