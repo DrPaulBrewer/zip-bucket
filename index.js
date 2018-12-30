@@ -1,4 +1,4 @@
-/* Copyright 2017 Paul Brewer, Economic and Financial Technology Consulting LLC */
+/* Copyright 2017- Paul Brewer, Economic and Financial Technology Consulting LLC and contributors */
 /* This file is open source software.  The MIT License applies to this software. */
 
 /* jshint esnext:true,eqeqeq:true,undef:true,lastsemic:true,strict:true,unused:true,node:true */

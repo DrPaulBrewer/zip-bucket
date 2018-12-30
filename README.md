@@ -174,7 +174,11 @@ bucket names in ./test/index.js to something more appropriate for your local tes
 
 ## Copyright
 
-Copyright 2017 Paul Brewer, Economic and Financial Technology Consulting LLC <drpaulbrewer@eaftc.com>
+Copyright 2017 Paul Brewer, Economic and Financial Technology Consulting LLC <drpaulbrewer@eaftc.com> and Contributors
+
+## Contributions
+
+@atlanteh Windows compatibility, downloadValidation flag
 
 ## License
 
