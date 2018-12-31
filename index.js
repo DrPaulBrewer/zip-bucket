@@ -9,7 +9,7 @@ const mv = require('mv');
 const archiver = require('archiver');
 const uuid = require('uuid/v4');
 const promiseRetry = require('promise-retry');
-const pEachSeries = require('p-each-series');
+const asyncPool = require('tiny-async-pool');
 
 const backoffStrategy = {
     retries: 3,
@@ -93,7 +93,8 @@ module.exports = (storage) => (options) => {
     }
 
     function zipEachFile(filelist) {
-        return pEachSeries(filelist, zipFile);
+        const {concurrentLimit = 1} = options;
+        return asyncPool(concurrentLimit, filelist, zipFile);
     }
 
     function finalize() {
