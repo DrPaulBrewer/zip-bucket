@@ -4,10 +4,7 @@
 /* jshint esnext:true,eqeqeq:true,undef:true,lastsemic:true,strict:true,unused:true,node:true */
 
 const fs = require('fs');
-const os = require('os');
-const mv = require('mv');
 const archiver = require('archiver');
-const uuid = require('uuid/v4');
 const promiseRetry = require('promise-retry');
 const asyncPool = require('tiny-async-pool');
 
@@ -56,12 +53,15 @@ module.exports = (storage) => (options) => {
     const zip = archiver('zip', {zlib: { level: 9 }});
     zip.on('error', (e)=>{ throw e; });
 
-    let keepOutput;
-    let bucketOutput;
+    let keepPromise;
+    let bucketPromise;
     if (keep) {
-        keepOutput = fs.createWriteStream(keep);
-        keepOutput.on('error', (e)=>{ throw e; });
+        const keepOutput = fs.createWriteStream(keep);
         zip.pipe(keepOutput);
+        keepPromise = new Promise((resolve, reject) => {
+            keepOutput.on('close', resolve);
+            keepOutput.on('error', reject);
+        });
     }
     if (toBucket) {
         const uploadOptions = {destination: toPath, validation: 'md5', metadata: {contentType: 'application/zip'}};
@@ -69,8 +69,11 @@ module.exports = (storage) => (options) => {
             uploadOptions.metadata.metadata = metadata;
         }
         logAction(`uploading zip file to gs://${toBucket}/${toPath}`);
-        bucketOutput = storage.bucket(toBucket).file(toPath).createWriteStream(uploadOptions);
-        bucketOutput.on('error', (e)=>{ throw e; });
+        const bucketOutput = storage.bucket(toBucket).file(toPath).createWriteStream(uploadOptions);
+        bucketPromise = new Promise((resolve, reject) => {
+            bucketOutput.on('finish', resolve);
+            bucketOutput.on('error', reject);
+        });
         zip.pipe(bucketOutput);
     }
 
@@ -113,24 +116,8 @@ module.exports = (storage) => (options) => {
 
     function finalize() {
         logAction('finalizing zip file');
-        return new Promise(resolve => {
-            let requiredResolves = 0;
-            const cb = () => {
-                requiredResolves--;
-                if (!requiredResolves) {
-                    resolve();
-                }
-            }
-            if (keepOutput) {
-                keepOutput.on('close', cb);
-                requiredResolves++;
-            }
-            if (bucketOutput) {
-                bucketOutput.on('finish', cb);
-                requiredResolves++;
-            }
-            zip.finalize();
-        })
+        zip.finalize();
+        return Promise.all([keepPromise, bucketPromise]);
     }
 
     function checkZipExistsInBucket() {
