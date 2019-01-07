@@ -94,7 +94,7 @@ Goal: zip up the files found at gs://my-bucket/20170402T0616/U to a local file /
 
 ### Installation
 
-npm i zip-bucket -S
+    npm i zip-bucket -S
 
 ### Importing and Setup
 
