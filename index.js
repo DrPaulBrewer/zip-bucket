@@ -4,12 +4,9 @@
 /* jshint esnext:true,eqeqeq:true,undef:true,lastsemic:true,strict:true,unused:true,node:true */
 
 const fs = require('fs');
-const os = require('os');
-const mv = require('mv');
 const archiver = require('archiver');
-const uuid = require('uuid/v4');
 const promiseRetry = require('promise-retry');
-const pEachSeries = require('p-each-series');
+const asyncPool = require('tiny-async-pool');
 
 const backoffStrategy = {
     retries: 3,
@@ -52,13 +49,33 @@ module.exports = (storage) => (options) => {
         return Promise.resolve(null);
     }
     const manifest = [];
-    const tmpzip = `${os.tmpdir()}/${uuid()}.zip`;
-    const output = fs.createWriteStream(tmpzip);
-    output.on('error', (e)=>{ throw e; });
-
+    
     const zip = archiver('zip', {zlib: { level: 9 }});
     zip.on('error', (e)=>{ throw e; });
-    zip.pipe(output);
+
+    let keepPromise;
+    let bucketPromise;
+    if (keep) {
+        const keepOutput = fs.createWriteStream(keep);
+        zip.pipe(keepOutput);
+        keepPromise = new Promise((resolve, reject) => {
+            keepOutput.on('close', resolve);
+            keepOutput.on('error', reject);
+        });
+    }
+    if (toBucket) {
+        const uploadOptions = {destination: toPath, validation: 'md5', metadata: {contentType: 'application/zip'}};
+        if (typeof(metadata) === 'object') {
+            uploadOptions.metadata.metadata = metadata;
+        }
+        logAction(`uploading zip file to gs://${toBucket}/${toPath}`);
+        const bucketOutput = storage.bucket(toBucket).file(toPath).createWriteStream(uploadOptions);
+        bucketPromise = new Promise((resolve, reject) => {
+            bucketOutput.on('finish', resolve);
+            bucketOutput.on('error', reject);
+        });
+        zip.pipe(bucketOutput);
+    }
 
     function logAction(action) {
         if (progress) {
@@ -93,46 +110,14 @@ module.exports = (storage) => (options) => {
     }
 
     function zipEachFile(filelist) {
-        return pEachSeries(filelist, zipFile);
+        const {concurrentLimit = 1} = options;
+        return asyncPool(concurrentLimit, filelist, zipFile);
     }
 
     function finalize() {
-        return new Promise(function(resolve) {
-            logAction('finalizing zip file');
-
-            output.on('close', resolve);
-            zip.finalize();
-        });
-    }
-
-    function uploadTheZipFile() {
-        // see docs and example at: 
-        // https://googlecloudplatform.github.io/google-cloud-node/#/docs/storage/1.0.0/storage/bucket?method=upload
-        if (toBucket) {
-            const options = {
-                destination: toPath,
-                validation: 'md5',
-                metadata: {
-                    contentType: 'application/zip'
-                }
-            };
-            if (typeof(metadata) === 'object') {
-                options.metadata.metadata = metadata;
-            }
-            logAction(`uploading zip file to gs://${toBucket}/${toPath}`);
-
-            return promiseRetry((retry)=>(storage.bucket(toBucket).upload(tmpzip, options).catch(retry)), backoffStrategy);
-        }
-    }
-
-    function keepTheZipFile() {
-        if (keep) {
-            logAction(`saving zip file locally to ${keep}`);
-
-            return new Promise(function(resolve,reject) {
-                mv(tmpzip,keep,(e) => {if(e) reject(e); else setTimeout(resolve, 100); });
-            });
-        }
+        logAction('finalizing zip file');
+        zip.finalize();
+        return Promise.all([keepPromise, bucketPromise]);
     }
 
     function checkZipExistsInBucket() {
@@ -147,13 +132,6 @@ module.exports = (storage) => (options) => {
             .catch(retry)
             ), backoffStrategy)
         }
-    }
-
-    function deleteTheZipFile() {
-        return new Promise(function(resolve,reject) {
-            // ignore errors as keepTheZipFile may have moved/deleted the tmpzip already
-            fs.unlink(tmpzip, ()=>{ setTimeout(resolve, 100); });
-        });
     }
 
     function successfulResult() {
@@ -173,9 +151,6 @@ module.exports = (storage) => (options) => {
     return getListOfFromFiles()
         .then(zipEachFile)
         .then(finalize)
-        .then(uploadTheZipFile)
-        .then(keepTheZipFile)
         .then(checkZipExistsInBucket)
-        .then(deleteTheZipFile)
         .then(successfulResult);
 };
