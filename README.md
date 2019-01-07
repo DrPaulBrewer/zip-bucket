@@ -143,16 +143,10 @@ THe returned `manifest` consists of an array of pairs of the file name in the bu
 
 `zipBucket` does not delete the files from the bucket after copying them to the `.zip` archive. That's your job. The resolved `manifest` may be helpful.
 
-## /tmp files
-
-The zip procedure creates unique .zip files in /tmp . These temporary .zip files are deleted on success -- but not deleted on error -- and may accumulate over time or potentially allow unauthorized reading or
-copying of the data.  
-
 ## Limitations
 
-Input files are streamed so the limit is not dependent on the size of input files except through the size
-of the resulting zip file.  The maximum zip file size will depend on the space available in `/tmp`.  
-
+The current tests include a 100MB file and several smaller files. Streaming is used, and the write stream to 
+Google Cloud Storage can sometimes timeout (~1%). This and other issues can be caught with the Promise's `.catch`.
 
 ## Google Cloud Charges
 
@@ -167,18 +161,13 @@ a disclaimer of liability for any defects in this software.
 If you clone the repository and want to test it locally, you will need to change the storage initialization and
 bucket names in ./test/index.js to something more appropriate for your local tests.  
 
-## Known Issues
-
-* Needs more tests
-* Needs to delete its temp files in /tmp
-
 ## Copyright
 
 Copyright 2017 Paul Brewer, Economic and Financial Technology Consulting LLC <drpaulbrewer@eaftc.com> and Contributors
 
 ## Contributions
 
-@atlanteh Windows compatibility, downloadValidation flag
+@atlanteh Windows compatibility, downloadValidation flag, v1.0 based on streaming
 
 ## License
 
