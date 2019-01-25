@@ -43,7 +43,7 @@ const validateOptions = ({fromBucket, fromPath}) => {
 
 module.exports = (storage) => (options) => {
     validateOptions(options);
-    const {fromBucket, fromPath, toBucket, toPath, keep, mapper, metadata, progress, downloadValidation} = options;
+    const {fromBucket, fromPath, toBucket, toPath, keep, mapper, metadata, progress, downloadValidation, files} = options;
 
     if ((!keep) && (!toBucket)) {
         return Promise.resolve(null);
@@ -83,6 +83,9 @@ module.exports = (storage) => (options) => {
         }
     }
     function getListOfFromFiles() {
+        if (files) {
+            return Promise.resolve(files)
+        }
         return promiseRetry((retry) => storage.bucket(fromBucket).getFiles({prefix:fromPath}).catch(retry), backoffStrategy)
         .then((data)=>(data[0]));
     }
