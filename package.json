@@ -27,7 +27,7 @@
   "homepage": "https://github.com/DrPaulBrewer/zip-bucket#readme",
   "dependencies": {
     "archiver": "^3.0.0",
-    "commander": "^2.19.0",
+    "commander": "^3.0.0",
     "promise-retry": "^1.1.1",
     "tiny-async-pool": "^1.0.4"
   },
