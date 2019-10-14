@@ -58,7 +58,7 @@ function output(status){
  .action(function(fromBucketPath, toBucketPath){
      if (gsParse(fromBucketPath,'fromBucket','fromPath')){
 	 gsParse(toBucketPath, 'toBucket', 'toPath');
-	 const storage = Storage(credentials);
+	 const storage = new Storage(credentials);
 	 const zipBucket = zipBucketFactory(storage);
 	 zipBucket(z).then(
 	     (status)=>{if (useJSON) console.log(JSON.stringify(status,null,2));}, (e)=>(console.log(e))
