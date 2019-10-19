@@ -37,7 +37,7 @@
     "command-promise": "^2.0.1",
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
-    "mocha": "^5.0.0",
+    "mocha": "^6.0.0",
     "pipe-to-storage": "^0.9.3",
     "should": "^13.2.3",
     "verify-bucket-md5": "^0.4.1",
