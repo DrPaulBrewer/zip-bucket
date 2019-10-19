@@ -168,6 +168,7 @@ Copyright 2017 Paul Brewer, Economic and Financial Technology Consulting LLC <dr
 ## Contributions
 
 @atlanteh Windows compatibility, downloadValidation flag, v1.0 based on streaming
+@harscoet Patch for issue with bin.js, move bin.js dependencies to "dependencies"
 
 ## License
 
