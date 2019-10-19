@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@google-cloud/storage": "^2.0.0",
-    "assert": "^1.4.1",
     "command-promise": "^2.0.1",
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
