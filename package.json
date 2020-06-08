@@ -29,7 +29,7 @@
     "archiver": "^3.1.1",
     "commander": "^3.0.2",
     "promise-retry": "^1.1.1",
-    "tiny-async-pool": "^1.0.4",
+    "tiny-async-pool": "^1.1.0",
     "@google-cloud/storage": "^4.0.0"
   },
   "devDependencies": {
