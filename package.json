@@ -30,7 +30,7 @@
     "commander": "^3.0.2",
     "promise-retry": "^1.1.1",
     "tiny-async-pool": "^1.0.4",
-    "@google-cloud/storage": "^4.0.0"
+    "@google-cloud/storage": "^4.7.0"
   },
   "devDependencies": {
     "command-promise": "^2.0.1",
