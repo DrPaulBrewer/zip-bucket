@@ -1,6 +1,6 @@
 # zip-bucket
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/DrPaulBrewer/zip-bucket.svg)](https://greenkeeper.io/)
+
 
 [![Build Status](https://travis-ci.org/DrPaulBrewer/zip-bucket.svg?branch=master)](https://travis-ci.org/DrPaulBrewer/zip-bucket)
 [![Coverage Status](https://coveralls.io/repos/github/DrPaulBrewer/zip-bucket/badge.svg?branch=master)](https://coveralls.io/github/DrPaulBrewer/zip-bucket?branch=master)
