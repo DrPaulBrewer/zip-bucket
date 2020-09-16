@@ -9,7 +9,9 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --slow 50 --timeout 240000",
-    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- --slow 50 --timeout 240000 -R spec test/*"
+    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- --slow 50 --timeout 240000 -R spec test/*",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -30,7 +32,8 @@
     "commander": "^3.0.2",
     "promise-retry": "^1.1.1",
     "tiny-async-pool": "^1.0.4",
-    "@google-cloud/storage": "^4.0.0"
+    "@google-cloud/storage": "^5.0.0",
+    "snyk": "^1.398.1"
   },
   "devDependencies": {
     "command-promise": "^2.0.1",
@@ -41,5 +44,6 @@
     "should": "^13.2.3",
     "verify-bucket-md5": "^0.4.1",
     "verify-fsdir-md5": "^0.2.1"
-  }
+  },
+  "snyk": true
 }
