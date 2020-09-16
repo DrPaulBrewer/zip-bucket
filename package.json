@@ -43,6 +43,6 @@
     "should": "^13.2.3",
     "verify-bucket-md5": "^0.4.1",
     "verify-fsdir-md5": "^0.2.1"
-  },
-  "snyk": true
+  }
+
 }
