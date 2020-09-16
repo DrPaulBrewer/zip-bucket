@@ -1,6 +1,6 @@
 {
   "name": "zip-bucket",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "zips files in a Google Cloud Storage [tm] bucket",
   "main": "index.js",
   "bin": "bin.js",
@@ -44,5 +44,4 @@
     "verify-bucket-md5": "^0.4.1",
     "verify-fsdir-md5": "^0.2.1"
   }
-
 }
