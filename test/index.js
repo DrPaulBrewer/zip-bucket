@@ -9,7 +9,7 @@ const verifyFSDirMD5 = require('verify-fsdir-md5');
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage({
     projectId: 'prynt-203408',
-    keyFilename: './test/cloud_storage_credentials.json'
+    keyFilename: './test/storage.json'
 });
 const pipeToStorage = require('pipe-to-storage')(storage);
 const verifyBucketMD5 = require('verify-bucket-md5')(storage);
