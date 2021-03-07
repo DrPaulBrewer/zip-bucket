@@ -8,14 +8,14 @@ const verifyFSDirMD5 = require('verify-fsdir-md5');
 // for storage API >=2.x
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage({
-    projectId: 'eaftc-open-source-testing',
-    keyFilename: './test/storage.json'
+    projectId: 'prynt-203408',
+    keyFilename: './test/cloud_storage_credentials.json'
 });
 const pipeToStorage = require('pipe-to-storage')(storage);
 const verifyBucketMD5 = require('verify-bucket-md5')(storage);
 const zipBucket = require('../index.js')(storage);
 
-const bucket = 'eaftc-travis-testing';
+const bucket = 'orteo_export_bucket';
 
 function fname(path){
     return path.replace(/.*\//,'');
@@ -40,6 +40,9 @@ const toBucket = bucket;
 const fromPath = 'zipfodder';
 const toPath = 'zipped/zip.zip';
 const keep = '/tmp/zipbuckettest.zip';
+// If your GCS bucket contains multiple small files (each < 10MB)
+// set resumable to false
+const resumable = true;
 
 
 const file1 = fromPath+'/hello.txt';
@@ -92,7 +95,8 @@ function suite(){
 	    fromBucket,
 	    fromPath: "",
 	    toBucket,
-	    toPath:"all.zip"
+	    toPath:"all.zip",
+			resumable
 	}).then((result)=>{
 	    assert.ok(result.manifest.length>0);
 	    return storage.bucket(bucket).file("all.zip").delete();
@@ -104,7 +108,8 @@ function suite(){
 	    fromPath: "",
 	    toBucket,
 	    toPath:"all.zip",
-	    progress: 1
+	    progress: 1,
+			resumable
 	}).then(()=>(storage.bucket(bucket).file("all.zip").delete()));
     });
     it('zip files with mappper that rejects all files succeeds with error', function(){
@@ -113,7 +118,8 @@ function suite(){
 	    fromPath: '',
 	    toBucket,
 	    toPath: "none.zip",
-	    mapper: (fInBucket, fSuggested)=>(false)
+	    mapper: (fInBucket, fSuggested)=>(false),
+			resumable
 	}).then((result)=>{
 	    assert.ok(result.manifest.length===0);
 	    return storage.bucket(bucket).file("none.zip").delete();
@@ -150,7 +156,7 @@ function suite(){
 	       );
     });
     it('zipBucket resolves without throwing error', function(){
-	return zipBucket({fromBucket,fromPath,toBucket,toPath,keep });
+	return zipBucket({fromBucket,fromPath,toBucket,toPath,keep});
     });
     it('zip file exists on storage', function(){
 	return assertFileExists(toPath, true);

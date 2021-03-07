@@ -32,18 +32,21 @@ function suggestedName(fname, fromPath){
     return fname;
 }   
 
-const validateOptions = ({fromBucket, fromPath}) => {
+const validateOptions = ({fromBucket, fromPath, resumable}) => {
     if (typeof(fromBucket) !== 'string') {
         throw new Error(`fromBucket should be of type 'string', got: ${typeof(fromBucket)}`);
     }
     if (typeof(fromPath) !== 'string') {
         throw new Error(`fromPath should be of type 'string', got: ${typeof(fromPath)}`);
     }
+    if (resumable === null || resumable === undefined || typeof(resumable) !== 'boolean') {
+        resumable = true;
+    }
 }
 
 module.exports = (storage) => (options) => {
     validateOptions(options);
-    const {fromBucket, fromPath, toBucket, toPath, keep, mapper, metadata, progress, downloadValidation} = options;
+    const {fromBucket, fromPath, toBucket, toPath, keep, mapper, metadata, progress, downloadValidation, resumable} = options;
 
     if ((!keep) && (!toBucket)) {
         return Promise.resolve(null);
@@ -64,7 +67,7 @@ module.exports = (storage) => (options) => {
         });
     }
     if (toBucket) {
-        const uploadOptions = {destination: toPath, validation: 'md5', metadata: {contentType: 'application/zip'}};
+        const uploadOptions = {resumable: resumable, destination: toPath, validation: 'md5', metadata: {contentType: 'application/zip'}};
         if (typeof(metadata) === 'object') {
             uploadOptions.metadata.metadata = metadata;
         }

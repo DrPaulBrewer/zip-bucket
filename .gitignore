@@ -2,3 +2,4 @@ node_modules
 *~
 storage.json
 test/storage.json
+test/cloud_storage_credentials.json
