@@ -32,20 +32,24 @@ function suggestedName(fname, fromPath){
     return fname;
 }   
 
-const validateOptions = ({fromBucket, fromPath, resumable}) => {
+const validateOptions = ({fromBucket, fromPath}) => {
     if (typeof(fromBucket) !== 'string') {
         throw new Error(`fromBucket should be of type 'string', got: ${typeof(fromBucket)}`);
     }
     if (typeof(fromPath) !== 'string') {
         throw new Error(`fromPath should be of type 'string', got: ${typeof(fromPath)}`);
     }
-    if (resumable === null || resumable === undefined || typeof(resumable) !== 'boolean') {
-        resumable = true;
-    }
 }
 
 module.exports = (storage) => (options) => {
+    let resumable;
+
     validateOptions(options);
+
+    if (resumable === null || resumable === undefined || typeof(resumable) !== 'boolean') {
+        resumable = true;
+    }
+    
     const {fromBucket, fromPath, toBucket, toPath, keep, mapper, metadata, progress, downloadValidation, resumable} = options;
 
     if ((!keep) && (!toBucket)) {
