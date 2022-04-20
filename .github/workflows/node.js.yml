@@ -27,8 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
+    - run: gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.STORAGE }}" --output test-storage.json gpg/test-storage
     - run: npm test
-      env:
-        client_email: "${{ secrets.CLIENT_EMAIL }}"
-        private_key: "${{ secrets.PRIVATE_KEY }}"
-        GCLOUD_PROJECT: "${{ secrets.GCLOUD_PROJECT }}"
+    - run: rm -f ./test-storage.json
+
