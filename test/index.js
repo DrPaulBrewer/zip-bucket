@@ -7,10 +7,9 @@ const cmd =  require('command-promise');
 const verifyFSDirMD5 = require('verify-fsdir-md5');
 // for storage API >=2.x
 const {Storage} = require('@google-cloud/storage');
-const storage = new Storage({
-    projectId: 'eaftc-open-source-testing',
-    keyFilename: './test/storage.json'
-});
+const { private_key, client_email } = process.env;
+const credentials = {private_key, client_email};
+const storage = new Storage({credentials});
 const pipeToStorage = require('pipe-to-storage')(storage);
 const verifyBucketMD5 = require('verify-bucket-md5')(storage);
 const zipBucket = require('../index.js')(storage);
