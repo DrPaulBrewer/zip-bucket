@@ -29,5 +29,5 @@ jobs:
     - run: npm install
     - run: npm test
       env:
-        client_email: ${{ secrets.CLIENT_EMAIL }}
-        private_key: ${{ secrets.PRIVATE_KEY }}
+        client_email: "${{ secrets.CLIENT_EMAIL }}"
+        private_key: "${{ secrets.PRIVATE_KEY }}"
