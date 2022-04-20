@@ -11,8 +11,8 @@ const private_key = process.env.private_key || process.env.PRIVATE_KEY;
 if (!private_key){
     throw new Error("private_key undefined");
 }
-if (!(/BEGIN PRIVATE KEY/.test(private_key))){
-    throw new Error("private key should have BEGIN PRIVATE KEY, got:"+private_key.slice(0,20));
+if (!(/-----BEGIN PRIVATE KEY/.test(private_key))){
+    throw new Error("private key should have -----BEGIN PRIVATE KEY, got:"+private_key.slice(0,20));
 }
 const client_email = process.env.client_email || process.env.CLIENT_EMAIL;
 if (!client_email){
