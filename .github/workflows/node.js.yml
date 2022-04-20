@@ -27,4 +27,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: env client_email=${{ secrets.CLIENT_EMAIL}},private_key=${{ secrets.PRIVATE_KEY }} npm test
+    - run: env client_email=${{ secrets.CLIENT_EMAIL}} private_key=${{ secrets.PRIVATE_KEY }} npm test
