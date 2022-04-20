@@ -30,4 +30,4 @@ jobs:
     - run: npm test
       env:
         client_email: ${{ secrets.CLIENT_EMAIL }}
-	private_key: ${{ secrets.PRIVATE_KEY }}
+        private_key: ${{ secrets.PRIVATE_KEY }}
