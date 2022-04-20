@@ -30,7 +30,7 @@
     "archiver": "^5.3.1",
     "commander": "^9.2.0",
     "promise-retry": "^2.0.1",
-    "tiny-async-pool": "^2.0.1"
+    "tiny-async-pool": "^1 < 2"
   },
   "devDependencies": {
     "c8": "^7.11.0",
