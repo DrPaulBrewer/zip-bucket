@@ -31,3 +31,4 @@ jobs:
       env:
         client_email: "${{ secrets.CLIENT_EMAIL }}"
         private_key: "${{ secrets.PRIVATE_KEY }}"
+        GCLOUD_PROJECT: "${{ secrets.GCLOUD_PROJECT }}"
