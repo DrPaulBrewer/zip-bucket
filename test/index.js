@@ -8,7 +8,19 @@ const verifyFSDirMD5 = require('verify-fsdir-md5');
 // for storage API >=2.x
 const {Storage} = require('@google-cloud/storage');
 const private_key = process.env.private_key || process.env.PRIVATE_KEY;
+if (!private_key){
+    throw new Error("private_key undefined");
+}
+if (!(/BEGIN PRIVATE KEY/.test(private_key))){
+    throw new Error("private key should have BEGIN PRIVATE KEY, got:"+private_key.slice(0,20));
+}
 const client_email = process.env.client_email || process.env.CLIENT_EMAIL;
+if (!client_email){
+    throw new Error("client_email undefined");
+}
+if (!(client_email.includes('@'))){
+    throw new Error("client_email should include the @ symbol, got:"+client_email);
+}
 const credentials = {private_key, client_email};
 const storage = new Storage({credentials});
 const pipeToStorage = require('pipe-to-storage')(storage);
