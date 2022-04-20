@@ -14,6 +14,7 @@ if (!private_key){
 if (!(/-----BEGIN PRIVATE KEY/.test(private_key))){
     throw new Error("private key should have -----BEGIN PRIVATE KEY, got:"+private_key.slice(0,20));
 }
+console.log("private_key.length is ",private_key.length);
 const client_email = process.env.client_email || process.env.CLIENT_EMAIL;
 if (!client_email){
     throw new Error("client_email undefined");
