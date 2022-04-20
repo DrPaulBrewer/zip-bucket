@@ -10,11 +10,11 @@ const program = require('commander');
 // for storage API 2.x
 const {Storage} = require('@google-cloud/storage');
 const zipBucketFactory = require("./index.js");
-const assert = require('assert');
+
 
 const z = {};
 
-let projectId, credentials, useJSON, keep;
+let projectId, credentials, useJSON;
 
 function setAPIKey(keyFilename){
     projectId = JSON.parse(fs.readFileSync(keyFilename)).project_id;
@@ -39,13 +39,6 @@ function gsParse(path, bucketProperty, pathProperty){
     z[bucketProperty] = match[1];
     z[pathProperty] = match[2] || '';
     return true;
-}
-
-function output(status){
-    if (useJSON)
-	console.log(JSON.stringify(status,null,2));
-    else
-	explain(status);
 }
 
 (program
