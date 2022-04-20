@@ -8,8 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec --slow 50 --timeout 240000",
-    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- --slow 50 --timeout 240000 -R spec test/*"
+    "test": "c8 mocha --reporter spec --slow 50 --timeout 240000",
+    "cover": "c8 cover mocha -- --slow 50 --timeout 240000 -R spec test/*"
   },
   "repository": {
     "type": "git",
@@ -26,17 +26,17 @@
   },
   "homepage": "https://github.com/DrPaulBrewer/zip-bucket#readme",
   "dependencies": {
-    "@google-cloud/storage": "^5.3.0",
-    "archiver": "^5.0.2",
-    "commander": "^6.2.0",
+    "@google-cloud/storage": "^5.19.2",
+    "archiver": "^5.3.1",
+    "commander": "^9.2.0",
     "promise-retry": "^2.0.1",
-    "tiny-async-pool": "^1.1.0"
+    "tiny-async-pool": "^2.0.1"
   },
   "devDependencies": {
+    "c8": "^7.11.0",
     "command-promise": "^2.0.1",
-    "coveralls": "^3.1.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^8.1.3",
+    "coveralls": "^3.1.1",
+    "mocha": "^9.2.2",
     "pipe-to-storage": "^0.9.3",
     "should": "^13.2.3",
     "verify-bucket-md5": "^0.4.1",
