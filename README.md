@@ -1,9 +1,9 @@
 # zip-bucket
 
-
-
-[![Build Status](https://travis-ci.org/DrPaulBrewer/zip-bucket.svg?branch=master)](https://travis-ci.org/DrPaulBrewer/zip-bucket)
-[![Coverage Status](https://coveralls.io/repos/github/DrPaulBrewer/zip-bucket/badge.svg?branch=master)](https://coveralls.io/github/DrPaulBrewer/zip-bucket?branch=master)
+![Build Status](https://github.com/DrPaulBrewer/zip-bucket/actions/workflows/node.js.yml/badge.svg)
+[![Known Vulnerabilities](https://snyk.io/test/github/DrPaulBrewer/zip-bucket/badge.svg)](https://snyk.io/test/github/DrPaulBrewer/zip-bucket)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/DrPaulBrewer/zip-bucket.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/DrPaulBrewer/zip-bucket/context:javascript)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/DrPaulBrewer/zip-bucket.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/DrPaulBrewer/zip-bucket/alerts/)
 
 Creates a .zip archive from a collection of files in a Google Cloud Storage[tm] bucket.  Include nodejs library and simple command-line program.
 
