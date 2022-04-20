@@ -7,8 +7,8 @@ const cmd =  require('command-promise');
 const verifyFSDirMD5 = require('verify-fsdir-md5');
 // for storage API >=2.x
 const {Storage} = require('@google-cloud/storage');
-console.log("env variable keys: ",Object.keys(process.env)); 
-const { private_key, client_email } = process.env;
+const private_key = process.env.private_key || process.env.PRIVATE_KEY;
+const client_email = process.env.client_email || process.env.CLIENT_EMAIL;
 const credentials = {private_key, client_email};
 const storage = new Storage({credentials});
 const pipeToStorage = require('pipe-to-storage')(storage);
