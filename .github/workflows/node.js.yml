@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.STORAGE }}" --output test-storage.json gpg/test-storage
+    - run: echo "${{ secrets.SERVICE_ACCOUNT }}" | gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.KEY }}" --output test-storage.json
     - run: npm test
     - run: rm -f ./test-storage.json
 
