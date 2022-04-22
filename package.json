@@ -37,9 +37,9 @@
     "command-promise": "^2.0.1",
     "coveralls": "^3.1.1",
     "mocha": "^9.2.2",
-    "pipe-to-storage": "^0.9.3",
+    "pipe-to-storage": "^0.10.1",
     "should": "^13.2.3",
-    "verify-bucket-md5": "^0.4.1",
+    "verify-bucket-md5": "^0.5.0",
     "verify-fsdir-md5": "^0.2.1"
   }
 }
