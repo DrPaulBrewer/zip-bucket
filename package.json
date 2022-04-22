@@ -1,6 +1,6 @@
 {
   "name": "zip-bucket",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "zips files in a Google Cloud Storage [tm] bucket",
   "main": "index.js",
   "bin": "bin.js",
