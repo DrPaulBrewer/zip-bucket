@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/DrPaulBrewer/zip-bucket#readme",
   "dependencies": {
-    "@google-cloud/storage": "^5.19.2",
+    "@google-cloud/storage": "^5.19.3",
     "archiver": "^5.3.1",
     "commander": "^9.2.0",
     "promise-retry": "^2.0.1",
