@@ -28,7 +28,7 @@
   "dependencies": {
     "@google-cloud/storage": "^5.19.2",
     "archiver": "^5.3.1",
-    "commander": "^9.2.0",
+    "commander": "^9.3.0",
     "promise-retry": "^2.0.1",
     "tiny-async-pool": "^1 < 2"
   },
