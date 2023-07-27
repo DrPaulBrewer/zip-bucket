@@ -109,10 +109,13 @@ module.exports = (storage) => (options) => {
         });
     }
 
-    function zipEachFile(filelist) {
+    async function zipEachFile(filelist) {
         const {concurrentLimit = 1} = options;
-	// asyncPool used this way will not work in 2.x or later
-        return asyncPool(concurrentLimit, filelist, zipFile);
+	    const results = [];
+        for await (const result of asyncPool(concurrentLimit, filelist, zipFile)) {
+            results.push(result);
+        }
+        return results;
     }
 
     function finalize() {
