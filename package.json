@@ -1,9 +1,8 @@
 {
   "name": "zip-bucket",
-  "version": "1.9.0",
+  "version": "2.0.0",
   "description": "zips files in a Google Cloud Storage [tm] bucket",
   "main": "index.js",
-  "bin": "bin.js",
   "directories": {
     "test": "test"
   },
@@ -26,13 +25,13 @@
   },
   "homepage": "https://github.com/DrPaulBrewer/zip-bucket#readme",
   "dependencies": {
-    "@google-cloud/storage": "^6.12.0",
     "archiver": "^5.3.1",
     "commander": "^11.0.0",
     "promise-retry": "^2.0.1",
     "tiny-async-pool": "^2"
   },
   "devDependencies": {
+    "@google-cloud/storage": "^6.12.0",
     "c8": "^8.0.1",
     "command-promise": "^2.0.1",
     "coveralls": "^3.1.1",
