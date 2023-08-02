@@ -12,7 +12,7 @@ Keep the resulting .zip file locally, upload back to Google Cloud Storage, or bo
 The `zip-bucket` command line program was split off
 into its own module in v2.0.0.  
 
-see [zip-bucket-bin](https://npmjs.com/zip-bucket-bin) for the command line program
+install [zip-bucket-bin](https://npmjs.com/zip-bucket-bin) for the `zip-bucket` command line program
 
 ## Library
 
